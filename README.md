@@ -2,7 +2,7 @@
 
 ---
 
-## Prepare your own dataset for Ball Tracking Training
+# Prepare your own dataset for Ball Tracking Training
 
 To train the ball tracking model on your own dataset, use:
 
@@ -104,7 +104,7 @@ The script generates YOLOv8 pose labels and a `data.yaml` file ready for trainin
 
 ---
 
-## Training
+# Training
 
 After preparing the dataset, the model can be trained using the provided training script:
 
@@ -133,5 +133,98 @@ python train.py --data /path/to/yolo_dataset/data.yaml
 - `--name` : run name (default: `train`)
 
 Training outputs are saved under `runs/pose/` by default.
+
+---
+
+Here is the **clean, final README section only**, ready to paste into your main README.
+It follows a **professional ML repo style**, concise, structured, and non awkward.
+
+---
+
+# Evaluation
+
+This repository provides two evaluation scripts: one for visual inspection on sample frames
+and one for numeric evaluation on the full test set.
+
+### Visual inspection on sample frames
+
+`eval_samples.py`
+
+This script runs inference on a random subset of test images and visualizes:
+- ground truth ball location (green)
+- predicted ball location (red)
+
+It also prints per image TP TN FP FN cases and localization error for true positives.
+
 ```
+
+python eval_samples.py 
+--weights /path/to/best.pt 
+--centers-csv /path/to/centers.csv 
+--images /path/to/yolo_dataset/images/test 
+--n 25 
+--conf 0.25
+
+```
+
+Arguments:
+- `--weights` : path to model weights (required)
+- `--centers-csv` : path to `centers.csv` (required)
+- `--images` : test images directory (required)
+- `--n` : number of samples to visualize (default: 25)
+- `--conf` : confidence threshold (default: 0.25)
+- `--imgsz` : inference image size (default: 640)
+- `--seed` : random seed (default: 42)
+- `--half-box` : half size of drawn square in pixels (default: 10)
+
+
+### Example outputs
+
+<p align="center">
+  <img src="assets/evaluation_examples/eval1.png" width="45%">
+  <img src="assets/evaluation_examples/eval2.png" width="45%">
+</p>
+
+*Qualitative evaluation examples. Ground truth is shown in green and model predictions in red.*
+
+
+---
+
+
+### Numeric evaluation on the full test set
+
+`eval_testset.py`
+
+This script evaluates the model on all test images and reports:
+- TP TN FP FN
+- Accuracy Precision Recall F1
+- Center localization error statistics on true positives
+
+An optional per image CSV report can be saved.
+
+```
+
+python eval_testset.py 
+--weights /path/to/best.pt 
+--centers-csv /path/to/centers.csv 
+--images /path/to/yolo_dataset/images/test 
+--conf 0.25 
+--save-csv /path/to/output/test_numeric_results.csv
+
+```
+
+Arguments:
+- `--weights` : path to model weights (required)
+- `--centers-csv` : path to `centers.csv` (required)
+- `--images` : test images directory (required)
+- `--conf` : confidence threshold (default: 0.25)
+- `--imgsz` : inference image size (default: 640)
+- `--split` : split name if `centers.csv` contains a `split` column (default: test)
+- `--save-csv` : optional path to save per image numeric results
+```
+
+---
+
+
+
 
