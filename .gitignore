@@ -1,0 +1,20 @@
+# Virtual environment
+ball_tracking/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Training and model outputs
+runs/
+weights/
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Logs
+*.log
